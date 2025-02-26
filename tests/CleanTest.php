@@ -14,6 +14,8 @@ beforeEach(function () {
 it('fails', function ($word) {
     $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean]);
 
+    dd($v->errors());
+
     expect($v->fails())->toBeTrue();
 })->with([
     'fuck',

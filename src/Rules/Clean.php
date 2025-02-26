@@ -22,7 +22,7 @@ class Clean implements ValidationRule
             $tolerated = Config::get('profanify-tolerated');
 
             if (Str::contains(Str::lower(Str::remove($tolerated, $value)), $profanities)) {
-                $fail(trans('clean'))->translate([
+                $fail(trans('message'))->translate([
                     'attribute' => $attribute,
                 ], $locale);
             }

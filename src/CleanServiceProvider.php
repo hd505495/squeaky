@@ -9,6 +9,8 @@ class CleanServiceProvider extends PackageServiceProvider
 {
     public function boot(): void
     {
+        $this->bootPackageTranslations();
+
         // Language Specific Configs
         $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/ar.php', 'profanify-ar');
         $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/en.php', 'profanify-en');
