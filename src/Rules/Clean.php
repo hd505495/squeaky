@@ -14,7 +14,7 @@ class Clean implements ValidationRule
         $profanities = Config::get('profanify-'.Config::get('app.locale'));
         $tolerated = Config::get('profanify-tolerated');
 
-        if (Str::contains(Str::remove($tolerated, $value), $profanities)) {
+        if (Str::contains(Str::lower(Str::remove($tolerated, $value)), $profanities)) {
             $fail('The :attribute is not clean.');
         }
     }
