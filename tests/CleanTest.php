@@ -12,21 +12,36 @@ beforeEach(function () {
 });
 
 it('fails', function ($word) {
-    $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean()]);
+    $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean]);
 
     expect($v->fails())->toBeTrue();
 })->with([
     'fuck',
     'shit',
-    'bastard'
+    'bastard',
 ]);
 
 it('passes', function ($word) {
-    $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean()]);
+    $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean]);
 
     expect($v->passes())->toBeTrue();
 })->with([
     'hello',
     'goodbye',
-    'greetings'
+    'greetings',
+    'analytics',
+]);
+
+test('different language', function ($word) {
+    $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean(locales: ['it', 'en'])]);
+
+    expect($v->fails())->toBeTrue();
+})->with([
+    'dio accecato',
+    'dio affogato nella merda',
+    'dio aguzzino',
+    'dio ammuffito',
+    'fuck',
+    'shit',
+    'bastard',
 ]);

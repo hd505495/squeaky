@@ -9,13 +9,21 @@ use Illuminate\Support\Str;
 
 class Clean implements ValidationRule
 {
+    public function __construct(
+        public ?array $locales = [],
+    ) {}
+
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $profanities = Config::get('profanify-'.Config::get('app.locale'));
-        $tolerated = Config::get('profanify-tolerated');
+        $locales = empty($this->locales) ? [Config::get('app.locale')] : $this->locales;
 
-        if (Str::contains(Str::lower(Str::remove($tolerated, $value)), $profanities)) {
-            $fail('The :attribute is not clean.');
+        foreach ($locales as $locale) {
+            $profanities = Config::get('profanify-'.$locale);
+            $tolerated = Config::get('profanify-tolerated');
+
+            if (Str::contains(Str::lower(Str::remove($tolerated, $value)), $profanities)) {
+                $fail(__('messages.unclean'));
+            }
         }
     }
 }
