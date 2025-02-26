@@ -9,7 +9,11 @@ class CleanServiceProvider extends PackageServiceProvider
 {
     public function boot(): void
     {
+        // Language Specific Configs
         $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/en.php', 'profanify-en');
+
+        // General Configs
+        $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/tolerated.php', 'profanify-tolerated');
     }
 
     public function configurePackage(Package $package): void

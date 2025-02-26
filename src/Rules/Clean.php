@@ -11,7 +11,10 @@ class Clean implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (Str::contains(strtolower($value), Config::get('profanify-en'))) {
+        $profanities = Config::get('profanify-'.Config::get('app.locale'));
+        $tolerated = Config::get('profanify-tolerated');
+
+        if (Str::contains(Str::remove($tolerated, $value), $profanities)) {
             $fail('The :attribute is not clean.');
         }
     }
