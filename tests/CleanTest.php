@@ -3,7 +3,7 @@
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Validator;
-use JonPurvis\Clean\Rules\Clean;
+use JonPurvis\Squeaky\Rules\Clean;
 
 beforeEach(function () {
     $this->translator = new Translator(

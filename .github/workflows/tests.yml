@@ -1,6 +1,10 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   test:
@@ -10,11 +14,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         php: [8.2, 8.3, 8.4]
-        laravel: [12.*, 11.*]
-        stability: [prefer-lowest, prefer-stable]
+        laravel: [11.*, 12.*]
+        stability: [prefer-stable]
         include:
           - laravel: 11.*
+            testbench: 9.*
           - laravel: 12.*
+            testbench: 10.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -34,11 +40,6 @@ jobs:
           echo "::add-matcher::${{ runner.tool_cache }}/php.json"
           echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Fix dependencies
-        if: ${{ startsWith(matrix.laravel, '9') }}
-        run: |
-          composer require "nesbot/carbon:^2.72.6" --no-interaction --no-update
-
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
@@ -46,3 +47,9 @@ jobs:
 
       - name: Execute tests
         run: vendor/bin/pest
+
+      - name: Run Pint
+        run: vendor/bin/pint --test --dirty
+
+      - name: Run Analysis
+        run: ./vendor/bin/phpstan analyse

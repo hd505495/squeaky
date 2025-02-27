@@ -1,11 +1,11 @@
 <?php
 
-namespace JonPurvis\Clean;
+namespace JonPurvis\Squeaky;
 
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class CleanServiceProvider extends PackageServiceProvider
+class SqueakyServiceProvider extends PackageServiceProvider
 {
     public function boot(): void
     {
