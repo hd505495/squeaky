@@ -1,6 +1,6 @@
 {
-    "name": "jonpurvis/clean",
-    "description": "A Laravel Validation Rule to Help Catch Profanity.",
+    "name": "jonpurvis/squeaky",
+    "description": "A Profanify Powered Laravel Validation Rule to Help Catch Profanity.",
     "keywords": [
         "jonpurvis",
         "laravel",
@@ -12,7 +12,7 @@
         "testing",
         "plugin"
     ],
-    "homepage": "https://github.com/jonpurvis/clean",
+    "homepage": "https://github.com/jonpurvis/squeaky",
     "license": "MIT",
     "require": {
         "php": "^8.2|^8.3|^8.4",
@@ -35,12 +35,12 @@
     },
     "autoload": {
         "psr-4": {
-            "JonPurvis\\Clean\\": "src/"
+            "JonPurvis\\Squeaky\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "JonPurvis\\Clean\\Tests\\": "tests/",
+            "JonPurvis\\Squeaky\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/"
         }
     },
@@ -62,7 +62,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "JonPurvis\\Clean\\CleanServiceProvider"
+                "JonPurvis\\Squeaky\\SqueakyServiceProvider"
             ]
         }
     },

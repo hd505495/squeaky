@@ -1,8 +1,8 @@
 <?php
 
-namespace JonPurvis\Clean\Tests;
+namespace JonPurvis\Squeaky\Tests;
 
-use JonPurvis\Clean\CleanServiceProvider;
+use JonPurvis\Squeaky\SqueakyServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
@@ -15,7 +15,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
-            CleanServiceProvider::class,
+            SqueakyServiceProvider::class,
         ];
     }
 

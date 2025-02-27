@@ -1,6 +1,6 @@
 <?php
 
-namespace JonPurvis\Clean\Rules;
+namespace JonPurvis\Squeaky\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
