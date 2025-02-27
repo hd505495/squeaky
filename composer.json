@@ -15,8 +15,8 @@
     "homepage": "https://github.com/jonpurvis/clean",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
-        "illuminate/contracts": "^10.0||^11.0",
+        "php": "^8.3|^8.4",
+        "illuminate/contracts": "^10.0 | ^11.0 | ^12.0",
         "jonpurvis/profanify": "^3.13",
         "spatie/laravel-package-tools": "^1.16"
     },
