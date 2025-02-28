@@ -1,93 +1,90 @@
-# :package_description
+<img src="art/banner.png">
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-<!--delete-->
----
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+# Squeaky
+A Laravel Validation Rule that helps catch profanity in your application.
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Have fun creating your package.
-4. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
----
-<!--/delete-->
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+[![Tests](https://github.com/JonPurvis/squeaky/actions/workflows/tests.yml/badge.svg)](https://github.com/JonPurvis/squeaky/actions/workflows/tests.yml)
+![GitHub last commit](https://img.shields.io/github/last-commit/jonpurvis/squeaky)
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/jonpurvis/squeaky/php)
+![GitHub issues](https://img.shields.io/github/issues/jonpurvis/squeaky)
+![GitHub](https://img.shields.io/github/license/jonpurvis/squeaky)
+![Packagist Downloads](https://img.shields.io/packagist/dt/jonpurvis/squeaky)
 
-## Support us
+## Introduction
+Squeaky (short for Squeaky Clean) is a Laravel validation rule that you can add your Laravel application, to ensure any
+user submitted input such as a name or biography, is free of profanity and therefore, clean. Just add `new Clean()` to
+your rules and you're good to go!
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+Squeaky is powered by [Profanify](https://github.com/JonPurvis/profanify/), which is a PestPHP Plugin that
+does the same thing, but for code. By utilising the profanity in that package, Squeaky is powerful from the get-go and
+provides support for numerous locales, not just English.
 
 ## Installation
 
-You can install the package via composer:
+To install Squeaky, you can run the following command in your project's root:
 
-```bash
-composer require :vendor_slug/:package_slug
+```text
+composer require jonpurvis/squeaky
 ```
 
-You can publish and run the migrations with:
+## Examples
 
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
-```
+Let's take a look at how Squeaky works. As it's a Laravel Validation rule, there's not really that much to it. You 
+would use it in the same way you would use a custom validation rule you've added yourself.
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-This is the contents of the published config file:
+Let's take the following scenario where we have a form that allows a user to enter their name, email and bio:
 
 ```php
 return [
+    'name' => ['required', 'string', 'max:255', new Clean],
+    'email' => [
+        'required',
+        'string',
+        'lowercase',
+        'email',
+        'max:255',
+        Rule::unique(User::class)->ignore($this->user()->id),
+    ],
+    'bio' => ['required', 'string', 'max:255', new Clean],
 ];
 ```
 
-Optionally, you can publish the views using
+You'll notice that both _name_ and _bio_ are using the **Clean** rule. This rule will take the value and ensure that 
+it doesn't exist in the profanity config files that the package has. By default, it will use your app locale, so if 
+your locale is set to `en`, it will scan profanity in the _en_ profanity config.
 
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
+If profanity is found, an error will appear in the validation errors array and will be shown to your user 
+(if your application does this).
 
-## Usage
+Some applications allow for more than one language, so you're able to pass in additional locales to the rule to cater 
+for them. Below is an example showing how to cater for both `en` and `it`:
 
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+'name' => ['required', 'string', 'max:255', new Clean(['en', 'it'])],
 ```
 
-## Testing
+This will then check the locale config for any locale you've passed in (providing the config exists!). If profanity is 
+found in any of them, an error will appear in the validation errors. 
 
-```bash
-composer test
-```
+The really cool thing about this, is the error will be returned in the language that failed. So if the failure was
+found in the `it` profanity list, the package assumes the user is Italian and returns the error message in Italian to
+let them know that their value is not clean. 
 
-## Changelog
+## Languages
+Squeaky currently supports the following languages:
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+- English
+- Italian
+- Arabic
+- Portuguese
+- Dutch
 
 ## Contributing
+Contributions to the package are more than welcome! 
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+For profanity additions, these will need adding into 
+[Profanify](https://github.com/JonPurvis/profanify) and then a new release will need to be tagged so this package can 
+use them. 
 
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
-## Credits
-
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+If you want to support a new language, once it's been added to [Profanify](https://github.com/JonPurvis/profanify), 
+it will then need adding in the `boot` method of the `SqueakyServiceProvider` class in this package. 

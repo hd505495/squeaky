@@ -1,6 +1,6 @@
 {
     "name": "jonpurvis/squeaky",
-    "description": "A Profanify Powered Laravel Validation Rule to Help Catch Profanity.",
+    "description": "A Laravel Validation Rule to Help Catch Profanity.",
     "keywords": [
         "jonpurvis",
         "laravel",
@@ -66,6 +66,6 @@
             ]
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
