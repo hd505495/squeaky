@@ -2,15 +2,11 @@
     "name": "jonpurvis/squeaky",
     "description": "A Laravel Validation Rule to Help Catch Profanity.",
     "keywords": [
-        "jonpurvis",
         "laravel",
         "php",
         "framework",
-        "pest",
-        "unit",
-        "test",
-        "testing",
-        "plugin"
+        "plugin",
+        "profanity"
     ],
     "homepage": "https://github.com/jonpurvis/squeaky",
     "license": "MIT",
