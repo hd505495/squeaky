@@ -1,6 +1,6 @@
 {
     "name": "jonpurvis/squeaky",
-    "description": "A Profanify Powered Laravel Validation Rule to Help Catch Profanity.",
+    "description": "A Laravel Validation Rule to Help Catch Profanity.",
     "keywords": [
         "jonpurvis",
         "laravel",
