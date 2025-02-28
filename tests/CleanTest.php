@@ -45,3 +45,25 @@ test('different language', function ($word) {
     'shit',
     'bastard',
 ]);
+
+it('throws an exception if one of the locales is not a string', function () {
+    (new Validator(
+        $this->translator,
+        ['name' => 'hello'],
+        ['name' => new Clean([new stdClass()])])
+    )->passes();
+})->throws(
+    exception: InvalidArgumentException::class,
+    exceptionMessage: 'The locale must be a string.'
+);
+
+it('throws an exception if one of the locales does not have a profanity config list', function () {
+    (new Validator(
+        $this->translator,
+        ['name' => 'hello'],
+        ['name' => new Clean(['en', 'invalid'])])
+    )->passes();
+})->throws(
+    exception: InvalidArgumentException::class,
+    exceptionMessage: 'The locale [\'invalid\'] is not supported.'
+);
