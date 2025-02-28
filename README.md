@@ -80,11 +80,18 @@ Squeaky currently supports the following languages:
 - Dutch
 
 ## Contributing
-Contributions to the package are more than welcome! 
+Contributions to the package are more than welcome! Depending on the type of change, there's a few extra steps that will
+need carrying out:
 
-For profanity additions, these will need adding into 
-[Profanify](https://github.com/JonPurvis/profanify) and then a new release will need to be tagged so this package can 
-use them. 
+### Existing Locale Changes
+These changes should be done in [Profanify](https://github.com/JonPurvis/profanify) and a new release should be tagged.
+Dependabot will then open a PR on this repo. Once that's been merged, it should be good to go because the config will
+already be getting loaded.
 
-If you want to support a new language, once it's been added to [Profanify](https://github.com/JonPurvis/profanify), 
-it will then need adding in the `boot` method of the `SqueakyServiceProvider` class in this package. 
+### New Locale Support
+The new locale config will need adding to [Profanify](https://github.com/JonPurvis/profanify) first and a new release 
+should be tagged. Dependabot will then open a PR on this repo. Additionally, the new config will need loading in
+within the `boot` method of the service provider of this package. 
+
+### Functionality Changes
+For changes to how this rule works, these should be done in this package. No change needed to Profanify.
