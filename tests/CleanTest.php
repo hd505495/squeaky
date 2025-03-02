@@ -3,6 +3,7 @@
 use Illuminate\Translation\ArrayLoader;
 use Illuminate\Translation\Translator;
 use Illuminate\Validation\Validator;
+use JonPurvis\Squeaky\Enums\Locale;
 use JonPurvis\Squeaky\Rules\Clean;
 
 beforeEach(function () {
@@ -46,7 +47,13 @@ test('different language', function ($word) {
     'bastard',
 ]);
 
-it('throws an exception if one of the locales is not a string', function () {
+it('passes when using enums', function (Locale $locale) {
+    $v = new Validator($this->translator, ['name' => 'hello'], ['name' => new Clean([$locale])]);
+
+    expect($v->passes())->toBeTrue();
+})->with(Locale::cases());
+
+it('throws an exception if one of the locales is not a string or enum', function () {
     (new Validator(
         $this->translator,
         ['name' => 'hello'],
@@ -54,7 +61,7 @@ it('throws an exception if one of the locales is not a string', function () {
     )->passes();
 })->throws(
     exception: InvalidArgumentException::class,
-    exceptionMessage: 'The locale must be a string.'
+    exceptionMessage: 'The locale must be a string or JonPurvis\Squeaky\Enums\Locale enum.',
 );
 
 it('throws an exception if one of the locales does not have a profanity config list', function () {
