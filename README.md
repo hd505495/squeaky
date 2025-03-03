@@ -35,6 +35,10 @@ would use it in the same way you would use a custom validation rule you've added
 Let's take the following scenario where we have a form that allows a user to enter their name, email and bio:
 
 ```php
+use App\Models\User;
+use Illuminate\Validation\Rule;
+use JonPurvis\Squeaky\Rules\Clean;
+
 return [
     'name' => ['required', 'string', 'max:255', new Clean],
     'email' => [
@@ -60,8 +64,20 @@ Some applications allow for more than one language, so you're able to pass in ad
 for them. Below is an example showing how to cater for both `en` and `it`:
 
 ```php
+use JonPurvis\Squeaky\Rules\Clean;
+
 'name' => ['required', 'string', 'max:255', new Clean(['en', 'it'])],
 ```
+
+Alternatively, instead of passing an array of strings to the rule, you can pass in an array of `JonPurvis\Squeaky\Enums\Locale` enums to specify the locales:
+
+```php
+use JonPurvis\Squeaky\Enums\Locale;
+use JonPurvis\Squeaky\Rules\Clean;
+
+'name' => ['required', 'string', 'max:255', new Clean([Locale::English, Locale::Italian])],
+```
+
 
 This will then check the locale config for any locale you've passed in (providing the config exists!). If profanity is 
 found in any of them, an error will appear in the validation errors. 
@@ -92,6 +108,8 @@ already be getting loaded.
 The new locale config will need adding to [Profanify](https://github.com/JonPurvis/profanify) first and a new release 
 should be tagged. Dependabot will then open a PR on this repo. Additionally, the new config will need loading in
 within the `boot` method of the service provider of this package. 
+
+A new case will also need adding to the `JonPurvis/Squeaky/Enums/Locale` enum to support the new locale.
 
 ### Functionality Changes
 For changes to how this rule works, these should be done in this package. No change needed to Profanify.
