@@ -28,7 +28,7 @@ class Clean implements ValidationRule
             if (Str::contains(Str::lower(Str::remove($tolerated, $value)), $profanities)) {
                 $fail(trans('message'))->translate([
                     'attribute' => $attribute,
-                ], $locale);
+                ], $this->getLocaleValue($locale));
             }
         }
     }
@@ -51,15 +51,21 @@ class Clean implements ValidationRule
     }
 
     /**
+     * Get the locale value expressed as a string.
+     */
+    protected function getLocaleValue(string|Locale $locale): string
+    {
+        return $locale instanceof Locale
+            ? $locale->value
+            : $locale;
+    }
+
+    /**
      * Get the name of the config file for the given locale. If a Locale enum is
      * provided, then use the underlying value.
      */
     protected function configFileName(string|Locale $locale): string
     {
-        $locale = $locale instanceof Locale
-            ? $locale->value
-            : $locale;
-
-        return 'profanify-' . $locale;
+        return 'profanify-' . $this->getLocaleValue($locale);
     }
 }
