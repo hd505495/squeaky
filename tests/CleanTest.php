@@ -15,7 +15,8 @@ beforeEach(function () {
 it('fails', function ($word) {
     $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean]);
 
-    expect($v->fails())->toBeTrue();
+    expect($v->fails())->toBeTrue()
+        ->and($v->errors()->all())->toBe(['The name field is not clean']);
 })->with([
     'fuck',
     'shit',
@@ -52,6 +53,13 @@ it('passes when using enums', function (Locale $locale) {
 
     expect($v->passes())->toBeTrue();
 })->with(Locale::cases());
+
+it('fails when using enums', function () {
+    $v = new Validator($this->translator, ['name' => 'fuck'], ['name' => new Clean([Locale::English])]);
+
+    expect($v->fails())->toBeTrue()
+        ->and($v->errors()->all())->toBe(['The name field is not clean']);
+});
 
 it('throws an exception if one of the locales is not a string or enum', function () {
     (new Validator(
