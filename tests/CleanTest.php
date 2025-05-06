@@ -35,7 +35,7 @@ it('passes', function ($word) {
 ]);
 
 test('different language', function ($word) {
-    $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean(locales: ['it', 'en'])]);
+    $v = new Validator($this->translator, ['name' => $word], ['name' => new Clean(locales: ['it', 'en', 'da'])]);
 
     expect($v->fails())->toBeTrue();
 })->with([
@@ -46,6 +46,7 @@ test('different language', function ($word) {
     'fuck',
     'shit',
     'bastard',
+    'fandens'
 ]);
 
 it('passes when using enums', function (Locale $locale) {
