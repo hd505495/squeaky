@@ -89,11 +89,12 @@ let them know that their value is not clean.
 ## Languages
 Squeaky currently supports the following languages:
 
+- Arabic
+- Danish
+- Dutch
 - English
 - Italian
-- Arabic
 - Portuguese
-- Dutch
 
 ## Contributing
 Contributions to the package are more than welcome! Depending on the type of change, there's a few extra steps that will
