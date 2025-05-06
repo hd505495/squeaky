@@ -11,15 +11,18 @@ class SqueakyServiceProvider extends PackageServiceProvider
     {
         $this->bootPackageTranslations();
 
+        // Set Profanify path to load configs from
+        $profanifyBasePath = realpath(__DIR__.'/../vendor/jonpurvis/profanify/src/Config');
+
         // Language Specific Configs
-        $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/ar.php', 'profanify-ar');
-        $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/en.php', 'profanify-en');
-        $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/it.php', 'profanify-it');
-        $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/nl.php', 'profanify-nl');
-        $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/profanities/pt_BR.php', 'profanify-pt_BR');
+        $this->mergeConfigFrom($profanifyBasePath.'/profanities/ar.php', 'profanify-ar');
+        $this->mergeConfigFrom($profanifyBasePath.'/profanities/en.php', 'profanify-en');
+        $this->mergeConfigFrom($profanifyBasePath.'/profanities/it.php', 'profanify-it');
+        $this->mergeConfigFrom($profanifyBasePath.'/profanities/nl.php', 'profanify-nl');
+        $this->mergeConfigFrom($profanifyBasePath.'/profanities/pt_BR.php', 'profanify-pt_BR');
 
         // General Configs
-        $this->mergeConfigFrom(base_path('vendor').'/jonpurvis/profanify/src/Config/tolerated.php', 'profanify-tolerated');
+        $this->mergeConfigFrom($profanifyBasePath.'/tolerated.php', 'profanify-tolerated');
     }
 
     public function configurePackage(Package $package): void
