@@ -11,8 +11,12 @@ class SqueakyServiceProvider extends PackageServiceProvider
     {
         $this->bootPackageTranslations();
 
-        // Set Profanify path to load configs from
-        $profanifyBasePath = realpath(__DIR__.'/../vendor/jonpurvis/profanify/src/Config');
+        // Set Profanify path
+        if (getenv('RUNNING_TESTS') === '1') {
+            $profanifyBasePath = realpath('vendor/jonpurvis/profanify/src/Config');
+        } else {
+            $profanifyBasePath = base_path('vendor').'/jonpurvis/profanify/src/Config';
+        }
 
         // Language Specific Configs
         $this->mergeConfigFrom($profanifyBasePath.'/profanities/ar.php', 'profanify-ar');
