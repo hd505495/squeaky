@@ -6,11 +6,13 @@ enum Locale: string
 {
     case Arabic = 'ar';
 
+    case Danish = 'da';
+
+    case Dutch = 'nl';
+
     case English = 'en';
 
     case Italian = 'it';
-
-    case Dutch = 'nl';
 
     case Portuguese = 'pt_BR';
 }
