@@ -24,14 +24,21 @@ class Clean implements ValidationRule
         // Get custom configuration
         $customBlockedWords = Config::get('squeaky.blocked_words', []);
         $customAllowedWords = Config::get('squeaky.allowed_words', []);
+        $caseSensitive = Config::get('squeaky.case_sensitive', false);
+
+        // Prepare the value for comparison
+        $valueToCheck = $caseSensitive ? $value : Str::lower($value);
 
         // Check custom blocked words first (these override everything)
         foreach ($customBlockedWords as $blockedWord) {
-            if (preg_match('/\b' . preg_quote($blockedWord, '/') . '\b/i', Str::lower($value))) {
+            $wordToCheck = $caseSensitive ? $blockedWord : Str::lower($blockedWord);
+            $regexFlags = $caseSensitive ? '' : 'i';
+            
+            if (preg_match('/\b' . preg_quote($wordToCheck, '/') . '\b/' . $regexFlags, $valueToCheck)) {
                 $fail(trans('message'))->translate([
                     'attribute' => $attribute,
                 ], $this->getLocaleValue($locales[0]));
-                
+
                 return;
             }
         }
@@ -42,14 +49,20 @@ class Clean implements ValidationRule
 
             foreach ($profanities as $profanity) {
                 // Skip if this word is explicitly allowed
-                if (in_array(Str::lower($profanity), array_map('strtolower', $customAllowedWords))) {
+                $profanityToCheck = $caseSensitive ? $profanity : Str::lower($profanity);
+                
+                if (in_array($profanityToCheck, array_map(function ($word) use ($caseSensitive) {
+                    return $caseSensitive ? $word : Str::lower($word);
+                }, $customAllowedWords))) {
                     continue;
                 }
 
-                if (preg_match('/\b' . preg_quote($profanity, '/') . '\b/i', Str::lower($value))) {
+                $regexFlags = $caseSensitive ? '' : 'i';
+                if (preg_match('/\b' . preg_quote($profanityToCheck, '/') . '\b/' . $regexFlags, $valueToCheck)) {
                     $fail(trans('message'))->translate([
                         'attribute' => $attribute,
                     ], $this->getLocaleValue($locale));
+                    
                     return;
                 }
             }
