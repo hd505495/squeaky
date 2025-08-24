@@ -21,16 +21,35 @@ class Clean implements ValidationRule
 
         $this->ensureLocalesAreValid($locales);
 
+        // Get custom configuration
+        $customBlockedWords = Config::get('squeaky.blocked_words', []);
+        $customAllowedWords = Config::get('squeaky.allowed_words', []);
+
+        // Check custom blocked words first (these override everything)
+        foreach ($customBlockedWords as $blockedWord) {
+            if (preg_match('/\b' . preg_quote($blockedWord, '/') . '\b/i', Str::lower($value))) {
+                $fail(trans('message'))->translate([
+                    'attribute' => $attribute,
+                ], $this->getLocaleValue($locales[0]));
+                
+                return;
+            }
+        }
+
+        // Check locale-specific profanity lists
         foreach ($locales as $locale) {
             $profanities = Config::get($this->configFileName($locale));
 
-            $lowerValue = Str::lower($value);
             foreach ($profanities as $profanity) {
-                if (preg_match('/\b' . preg_quote($profanity, '/') . '\b/i', $lowerValue)) {
+                // Skip if this word is explicitly allowed
+                if (in_array(Str::lower($profanity), array_map('strtolower', $customAllowedWords))) {
+                    continue;
+                }
+
+                if (preg_match('/\b' . preg_quote($profanity, '/') . '\b/i', Str::lower($value))) {
                     $fail(trans('message'))->translate([
                         'attribute' => $attribute,
                     ], $this->getLocaleValue($locale));
-                    
                     return;
                 }
             }
