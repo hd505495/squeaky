@@ -30,7 +30,8 @@ class Clean implements ValidationRule
                     $fail(trans('message'))->translate([
                         'attribute' => $attribute,
                     ], $this->getLocaleValue($locale));
-                    break;
+                    
+                    return;
                 }
             }
         }
