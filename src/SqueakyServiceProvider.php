@@ -28,6 +28,9 @@ class SqueakyServiceProvider extends PackageServiceProvider
         $this->mergeConfigFrom($profanifyBasePath.'/profanities/nl.php', 'profanify-nl');
         $this->mergeConfigFrom($profanifyBasePath.'/profanities/pt_BR.php', 'profanify-pt_BR');
         $this->mergeConfigFrom($profanifyBasePath.'/profanities/ru.php', 'profanify-ru');
+
+        // Load the package configuration
+        $this->mergeConfigFrom(__DIR__.'/../config/squeaky.php', 'squeaky');
     }
 
     public function configurePackage(Package $package): void
@@ -39,6 +42,7 @@ class SqueakyServiceProvider extends PackageServiceProvider
          */
         $package
             ->name('clean')
-            ->hasTranslations();
+            ->hasTranslations()
+            ->hasConfigFile();
     }
 }
